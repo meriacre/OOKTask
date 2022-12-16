@@ -1,6 +1,6 @@
 package com.test.ooktask.model
 
-data class PostCardModel(
+data class Postcard(
     var id: Int,
-    var url: String
+    var image: String
 )

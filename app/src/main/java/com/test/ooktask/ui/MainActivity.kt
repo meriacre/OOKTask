@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.test.ooktask.databinding.ActivityMainBinding
-import com.test.ooktask.model.PostCardModel
+import com.test.ooktask.model.Postcard
 
 
 class MainActivity : AppCompatActivity(), PostCardListener {
@@ -16,7 +16,10 @@ class MainActivity : AppCompatActivity(), PostCardListener {
     lateinit var mainPresenter: MainPresenter
 
     lateinit var mainAdapter: MainAdapter
-    val postCardList = ArrayList<PostCardModel>()
+    private val postCards = ArrayList<Postcard>()
+    private var i = 1
+    var isLoading: Boolean = false
+    var visibleThreshold = 5
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,30 +29,47 @@ class MainActivity : AppCompatActivity(), PostCardListener {
         mainPresenter = MainPresenter()
         bind()
         setUpAdapter()
+        mainPresenter.getPhotos( this, i)
 
     }
 
 
     private fun bind(){
-        binding.tvHello.setOnClickListener{
-            mainPresenter.getPhotos( this, 1)
-        }
+        binding.rvCards.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val linearLayout = recyclerView.layoutManager as LinearLayoutManager
+                val totalItemCount = linearLayout.itemCount
+                val lastVisibleItem = linearLayout.findLastVisibleItemPosition()
+                if (!isLoading && totalItemCount <= lastVisibleItem + visibleThreshold) {
+                    mainPresenter.getPhotos(this@MainActivity, i)
+                    isLoading = true
+                }
+            }
+        })
     }
 
     private fun setUpAdapter() {
         binding.rvCards.layoutManager =  GridLayoutManager(this, 2, RecyclerView.VERTICAL, false)
-        mainAdapter = MainAdapter(postCardList, this)
+        mainAdapter = MainAdapter(postCards, this)
         binding.rvCards.adapter = mainAdapter
+
     }
 
-    override fun getPostCards(postcardList: ArrayList<PostCardModel>) {
-        postcardList.size
+    override fun getPostCards(postcardList: ArrayList<Postcard>) {
         Log.d("test", postcardList.toString())
+        for (item in postCards){
+          item.image =   item.image.substring(4)
+            item.image = item.image + ".jpg"}
+        postCards.addAll(postcardList)
+        mainAdapter.updateData(postCards)
+        isLoading = false
+        i++
     }
 
     override fun getPostCardsError(e: String) {
+        Log.d("error", e)
 
     }
-
 
 }
