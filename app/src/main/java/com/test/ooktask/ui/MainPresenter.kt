@@ -10,14 +10,14 @@ import kotlinx.coroutines.withContext
 
 class MainPresenter {
 
-    private var postCardsList: List<Postcard> = ArrayList()
+    private var postCardsList: ArrayList<Postcard> = ArrayList()
 
     fun getPhotos(listener: PostCardListener, page: Int) {
 
         MainScope().launch(Dispatchers.IO) {
             try {
-                val response = RetrofitInstance().api.geImages(3, page)
-                postCardsList = response.data.postcards
+                val response = RetrofitInstance().api.geImages(30, page)
+                postCardsList = response.data.postcards as ArrayList<Postcard>
                 withContext(Dispatchers.Main) {
                     listener.getPostCards(postCardsList)
                 }

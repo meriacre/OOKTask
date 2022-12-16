@@ -25,9 +25,15 @@ class MainAdapter(var items: ArrayList<Postcard>, var context: Context) :Recycle
         holder.image
 
         Glide.with(context)
-            .load(image)
+            .load("https://cdn.otkritkiok.ru/posts/thumbs/" + image.image)
             .into(holder.image)
     }
 
     override fun getItemCount(): Int = items.size
+
+    fun updateData(persModels: ArrayList<Postcard>) {
+        this.items = persModels
+        //      notifyDataSetChanged()
+        notifyItemInserted(items.size - 1)
+    }
 }
