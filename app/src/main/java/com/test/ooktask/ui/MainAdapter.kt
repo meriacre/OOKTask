@@ -2,14 +2,13 @@ package com.test.ooktask.ui
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.test.ooktask.databinding.LoImageBinding
-import com.test.ooktask.model.PostCardModel
+import com.test.ooktask.model.Postcard
 
-class MainAdapter(var items: ArrayList<PostCardModel>, var context: Context) :RecyclerView.Adapter<MainAdapter.MyViewHolder>() {
+class MainAdapter(var items: ArrayList<Postcard>, var context: Context) :RecyclerView.Adapter<MainAdapter.MyViewHolder>() {
 
     class MyViewHolder(val binding: LoImageBinding) : RecyclerView.ViewHolder(binding.root) {
         var image = binding.ivPhoto

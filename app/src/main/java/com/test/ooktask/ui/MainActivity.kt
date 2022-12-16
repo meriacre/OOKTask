@@ -4,10 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.test.ooktask.databinding.ActivityMainBinding
-import com.test.ooktask.model.PostCardModel
+import com.test.ooktask.model.Postcard
 
 
 class MainActivity : AppCompatActivity(), PostCardListener {
@@ -16,7 +15,7 @@ class MainActivity : AppCompatActivity(), PostCardListener {
     lateinit var mainPresenter: MainPresenter
 
     lateinit var mainAdapter: MainAdapter
-    val postCardList = ArrayList<PostCardModel>()
+    val postCardList = ArrayList<Postcard>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,8 +41,7 @@ class MainActivity : AppCompatActivity(), PostCardListener {
         binding.rvCards.adapter = mainAdapter
     }
 
-    override fun getPostCards(postcardList: ArrayList<PostCardModel>) {
-        postcardList.size
+    override fun getPostCards(postcardList: List<Postcard>) {
         Log.d("test", postcardList.toString())
     }
 
